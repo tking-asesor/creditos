@@ -3,129 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Isidro Cabrera · App Principal</title>
+    <title>Isidro Cabrera · Asesoría de Crédito</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230B0F19'/><text x='50' y='68' font-size='55' text-anchor='middle' fill='%232ECC71' font-family='Arial' font-weight='bold'>IC</text></svg>">
     <style>
-        :root { --bg: #0B0F19; --accent: #2ECC71; --white: #fff; --error: #ff4d4d; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg); color: var(--white); font-family: 'Segoe UI', sans-serif; padding: 15px; display: flex; justify-content: center; }
+        :root { --bg-deep: #0B0F19; --accent-gold: #2ECC71; --white: #ffffff; --whatsapp: #25D366; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-deep); color: var(--white); padding: 10px; display: flex; justify-content: center; }
         .container { width: 100%; max-width: 500px; }
-        .card { background: rgba(255,255,255,0.02); border-radius: 25px; padding: 25px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 50px; }
-        h3 { color: var(--accent); margin-bottom: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; text-align: center; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-size: 11px; opacity: 0.6; margin-bottom: 5px; }
-        input, select, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: #1A1D2E; color: white; font-size: 14px; }
-        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .btn { width: 100%; padding: 16px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .btn-primary { background: rgba(46, 204, 113, 0.2); color: var(--accent); border: 1px solid var(--accent); }
-        .btn-wa { background: #25D366; color: white; }
-        .btn-back { background: transparent; color: gray; font-size: 12px; margin-top: 10px; }
-        .step { display: none; }
-        .step.active { display: block; }
-        .check-item { display: flex; align-items: center; gap: 10px; font-size: 13px; padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #bbb; }
-        .check-item input { width: 18px; height: 18px; accent-color: var(--accent); }
-        .notice { background: rgba(46,204,113,0.1); padding: 15px; border-radius: 12px; font-size: 12px; line-height: 1.5; color: var(--accent); border: 1px dashed var(--accent); margin-top: 20px; }
+        .app-card { background: rgba(255,255,255,0.02); border-radius: 25px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(15px); }
+        .header { padding: 25px; text-align: center; border-bottom: 1px solid rgba(46, 204, 113, 0.4); }
+        .logo { font-size: 24px; font-weight: 800; }
+        .logo span { color: var(--accent-gold); }
+        .content { padding: 20px; }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-size: 10px; font-weight: 700; margin-bottom: 5px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.8px; }
+        input, select, textarea { width: 100%; padding: 14px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; font-size: 14px; background: #1A1D2E; color: white; }
+        .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 10px; }
+        .btn-primary { background: rgba(46, 204, 113, 0.15); color: var(--accent-gold); border: 1px solid rgba(46, 204, 113, 0.3); }
+        .btn-whatsapp { background: var(--whatsapp); color: white; }
+        .step-content { display: none; }
+        .step-content.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .checklist-box { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; margin-top: 10px; border: 1px solid rgba(46, 204, 113, 0.2); }
+        .check-item { display: flex; align-items: center; gap: 10px; font-size: 12px; margin-bottom: 8px; color: #ccc; }
+        .check-item input { width: 18px; height: 18px; accent-color: var(--accent-gold); }
+        .table-container { overflow-x: auto; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin-top: 15px; }
+        table { width: 100%; border-collapse: collapse; font-size: 10px; min-width: 550px; }
+        th { background: rgba(46, 204, 113, 0.1); padding: 10px; color: var(--accent-gold); }
+        td { padding: 10px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
+        td.selected { background: var(--accent-gold); color: var(--bg-deep); font-weight: 800; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="card">
-            
-            <div class="step active" id="step1">
-                <h3>Identificación</h3>
-                <div class="form-group">
-                    <label>Número de Cédula</label>
-                    <input type="text" id="ci" class="format-mil" placeholder="Ej: 1.234.567">
-                    <p id="ciAlert" style="color:var(--error); font-size:10px; margin-top:5px; display:none;">Límite de intentos alcanzado para esta CI.</p>
-                </div>
-                <button class="btn btn-primary" onclick="validarCI()">SIGUIENTE</button>
-            </div>
-
-            <div class="step" id="step2">
-                <h3>Simulador de Cuotas</h3>
-                <select id="monto" onchange="verCuotas()">
-                    <option value="">Seleccione Monto...</option>
-                    <option value="1000000">1.000.000 Gs</option>
-                    <option value="2000000">2.000.000 Gs</option>
-                    <option value="3000000">3.000.000 Gs</option>
-                    <option value="4000000">4.000.000 Gs</option>
-                    <option value="5000000">5.000.000 Gs</option>
-                </select>
-                <div id="cuoteroCont" style="margin-top:15px; font-size:12px; text-align:center;"></div>
-                <button class="btn btn-primary" id="btnS2" style="display:none;" onclick="irA(3)">CONTINUAR</button>
-                <button class="btn btn-back" onclick="irA(1)">Volver</button>
-            </div>
-
-            <div class="step" id="step3">
-                <h3>Perfil Laboral</h3>
-                <div class="form-group"><label>Nombre y Apellido</label><input type="text" id="nombre"></div>
-                <div class="form-group"><label>WhatsApp</label><input type="tel" id="tel"></div>
-                <div class="form-group"><label>Ingreso Mensual (Gs)</label><input type="text" id="ingreso" class="format-mil"></div>
-                
-                <div class="form-group">
-                    <label>Perfil</label>
-                    <select id="perfil" onchange="cargarRequisitos()">
+        <div class="app-card">
+            <div class="header"><div class="logo">ISIDRO <span>CABRERA</span></div></div>
+            <div class="content">
+                <div class="step-content active" id="step1">
+                    <label>Monto a Simular (Gs.)</label>
+                    <select id="montoSimulador" onchange="actualizarTabla()">
                         <option value="">Seleccione...</option>
-                        <option value="ips">Trabajador Formal (IPS)</option>
-                        <option value="iva">Trabajador Formal (IVA)</option>
-                        <option value="informal">Informal (Sin IPS)</option>
-                        <option value="pub_perm">Público Permanente</option>
-                        <option value="pub_cont">Público Contratado</option>
-                        <option value="micro_iva">Micro con IVA</option>
-                        <option value="micro_pat">Micro con Patente</option>
-                        <option value="micro_sin">Micro sin Patente</option>
-                        <option value="pro">Profesional Indep.</option>
+                        <option value="1000000">1.000.000 Gs</option>
+                        <option value="2000000">2.000.000 Gs</option>
+                        <option value="3000000">3.000.000 Gs</option>
+                        <option value="4000000">4.000.000 Gs</option>
+                        <option value="5000000">5.000.000 Gs</option>
                     </select>
-                </div>
-
-                <div id="camposExtra" style="display:none;">
-                    <div class="form-group"><label>Empresa / Razón Social</label><input type="text" id="razon"></div>
-                    <label>Dirección Laboral</label>
-                    <div class="row">
-                        <input type="text" id="labCalle" placeholder="Calle">
-                        <input type="text" id="labNum" placeholder="N°">
+                    <div class="table-container" id="tablaCont" style="display:none;">
+                        <table>
+                            <thead><tr><th>6 cuot.</th><th>8 cuot.</th><th>10 cuot.</th><th>12 cuot.</th><th>15 cuot.</th><th>18 cuot.</th><th>20 cuot.</th><th>24 cuot.</th></tr></thead>
+                            <tbody id="cuerpoTabla"></tbody>
+                        </table>
                     </div>
-                    <input type="text" id="labBarrio" placeholder="Barrio" style="margin-top:5px;">
+                    <div id="resultadoSim" style="display:none; text-align:center; margin-top:20px;">
+                        <h3 id="txtCuota" style="color:var(--accent-gold); margin-bottom:15px;"></h3>
+                        <button class="btn btn-primary" onclick="irA(2)">CONTINUAR</button>
+                    </div>
                 </div>
 
-                <div id="reqCont" style="display:none; margin-top:15px;">
-                    <label style="color:var(--accent)">Documentos que posee (Marque los que tiene):</label>
-                    <div id="listaReq"></div>
+                <div class="step-content" id="step2">
+                    <div class="form-group"><label>Nombre y Apellido Completos</label><input type="text" id="nombre"></div>
+                    <div class="row-2">
+                        <div class="form-group"><label>CI N°</label><input type="text" id="ci" class="format-mil"></div>
+                        <div class="form-group"><label>WhatsApp</label><input type="tel" id="tel"></div>
+                    </div>
+                    <div class="form-group"><label>Ingreso Mensual</label><input type="text" id="ingreso" class="format-mil"></div>
+                    <div class="form-group">
+                        <label>Perfil Laboral</label>
+                        <select id="perfil" onchange="actualizarPerfiles()">
+                            <option value="">Seleccione...</option>
+                            <option value="formal_ips">Trabajador Formal (con IPS)</option>
+                            <option value="formal_iva">Trabajador Formal (con IVA)</option>
+                            <option value="informal">Trabajador Informal (sin IPS)</option>
+                            <option value="publico_permanente">Funcionario Público Permanente</option>
+                            <option value="publico_contratado">Funcionario Público Contratado</option>
+                            <option value="micro_iva">Microempresa con IVA</option>
+                            <option value="micro_patente">Microempresa con Patente</option>
+                            <option value="micro_sin_patente">Microempresa sin Patente</option>
+                            <option value="prof_independiente">Profesional Independiente</option>
+                        </select>
+                    </div>
+                    <div id="seccionLaboral" style="display:none;">
+                        <div class="form-group"><label>Empresa / Razón Social</label><input type="text" id="razonSocial"></div>
+                        <label>Dirección Laboral</label>
+                        <div class="form-group"><input type="text" id="labCalle" placeholder="Calle"></div>
+                        <div class="row-2">
+                            <input type="text" id="labNum" placeholder="N°">
+                            <input type="text" id="labBarrio" placeholder="Barrio">
+                        </div>
+                    </div>
+                    <div id="checklistCont" class="checklist-box" style="display:none;">
+                        <label style="color:var(--accent-gold); margin-bottom:10px; display:block;">DOCUMENTOS QUE POSEE:</label>
+                        <div id="listaCheck"></div>
+                    </div>
+                    <button class="btn btn-primary" onclick="irA(3)">SIGUIENTE</button>
+                    <button class="btn" style="color:gray; font-size:12px;" onclick="irA(1)">Volver</button>
                 </div>
-                <button class="btn btn-primary" onclick="irA(4)" style="margin-top:20px;">SIGUIENTE</button>
-                <button class="btn btn-back" onclick="irA(2)">Volver</button>
-            </div>
 
-            <div class="step" id="step4">
-                <h3>Ubicación Casa y Referencias</h3>
-                <div class="form-group">
-                    <label>Ciudad</label>
-                    <select id="ciudad" onchange="otroC()">
-                        <option value="Pedro Juan Caballero">Pedro Juan Caballero</option>
-                        <option value="Asunción">Asunción</option>
-                        <option value="Ciudad del Este">Ciudad del Este</option>
-                        <option value="Encarnación">Encarnación</option>
-                        <option value="Luque">Luque</option>
-                        <option value="OTRA">-- OTRA CIUDAD --</option>
-                    </select>
-                    <input type="text" id="otraC" placeholder="Nombre de la ciudad" style="display:none; margin-top:5px;">
+                <div class="step-content" id="step3">
+                    <div class="form-group">
+                        <label>Ciudad</label>
+                        <select id="ciudadSel" onchange="checkOtra()">
+                            <option value="Pedro Juan Caballero (PJC)">Pedro Juan Caballero (PJC)</option>
+                            <option value="Asunción">Asunción</option>
+                            <option value="Ciudad del Este">Ciudad del Este</option>
+                            <option value="Encarnación">Encarnación</option>
+                            <option value="OTRA">OTRA CIUDAD</option>
+                        </select>
+                        <input type="text" id="otraCiudad" style="display:none; margin-top:10px;" placeholder="Escriba su ciudad">
+                    </div>
+                    <label>Dirección Particular</label>
+                    <div class="form-group"><input type="text" id="casaCalle" placeholder="Calle"></div>
+                    <div class="row-2">
+                        <input type="text" id="casaNum" placeholder="N°">
+                        <input type="text" id="casaBarrio" placeholder="Barrio">
+                    </div>
+                    <label style="margin-top:20px; display:block;">Referencias (Nombre, Apellido y Celular)</label>
+                    <input type="text" id="ref1" placeholder="Referencia 1 (Familiar)" style="margin-bottom:10px;">
+                    <input type="text" id="ref2" placeholder="Referencia 2 (Personal)" style="margin-bottom:10px;">
+                    <input type="text" id="ref3" placeholder="Referencia 3 (Personal/Laboral)">
+                    
+                    <p style="font-size:11px; color:var(--accent-gold); margin-top:20px; text-align:center; border: 1px dashed var(--accent-gold); padding:10px; border-radius:10px;">
+                        ⚠️ Tenga listos sus documentos y ubicación GPS para enviar por WhatsApp cuando se le solicite.
+                    </p>
+                    <button class="btn btn-whatsapp" onclick="enviar()">ENVIAR SOLICITUD COMPLETA</button>
+                    <button class="btn" style="color:gray; font-size:12px;" onclick="irA(2)">Volver</button>
                 </div>
-                <div class="row">
-                    <input type="text" id="casaCalle" placeholder="Calle Casa">
-                    <input type="text" id="casaNum" placeholder="N°">
-                </div>
-                <input type="text" id="casaBarrio" placeholder="Barrio" style="margin-top:5px;">
-
-                <h3 style="margin-top:20px;">3 Referencias Personales</h3>
-                <input type="text" id="ref1" placeholder="Ref 1: Nombre, Apellido y Cel" style="margin-bottom:5px;">
-                <input type="text" id="ref2" placeholder="Ref 2: Nombre, Apellido y Cel" style="margin-bottom:5px;">
-                <input type="text" id="ref3" placeholder="Ref 3: Nombre, Apellido y Cel">
-
-                <div class="notice">
-                    📌 <b>PASO FINAL:</b> Tenga listos sus documentos. Al enviar, deberá proveer la <b>ubicación GPS</b> de su casa y trabajo cuando el asesor lo solicite vía WhatsApp.
-                </div>
-                <button class="btn btn-wa" onclick="finalizar()">ENVIAR SOLICITUD COMPLETA</button>
-                <button class="btn btn-back" onclick="irA(3)">Volver</button>
             </div>
         </div>
     </div>
@@ -133,101 +137,99 @@
     <script>
         const WA_NUM = "595992271485";
         const G_URL = "TU_URL_DE_APPS_SCRIPT";
-        
-        function validarCI() {
-            const ci = document.getElementById('ci').value.replace(/\D/g,'');
-            if(ci.length < 5) return alert("Cédula inválida");
-            let intentos = JSON.parse(localStorage.getItem('ci_intentos') || "{}");
-            intentos[ci] = (intentos[ci] || 0) + 1;
-            if(intentos[ci] > 2) { document.getElementById('ciAlert').style.display = 'block'; return; }
-            localStorage.setItem('ci_intentos', JSON.stringify(intentos));
-            irA(2);
-        }
+        const REQUISITOS = {
+            formal_ips: ["Antigüedad: 6 meses aportes IPS", "Liquidación de salario"],
+            formal_iva: ["Antigüedad: 6 meses con IVAs", "6 últimos IVAs", "6 facturas emitidas"],
+            informal: ["Antigüedad: 6 meses mínimo", "Certificado de trabajo o RUC"],
+            publico_permanente: ["Antigüedad: 1 mes", "Cédula vigente"],
+            publico_contratado: ["Antigüedad: 15 meses", "Cédula vigente"],
+            micro_iva: ["Antigüedad: 18 meses", "6 últimos IVAs", "Fotos negocio"],
+            micro_patente: ["Antigüedad: 18 meses", "Patente actual", "6 últimos IVAs", "Fotos negocio"],
+            micro_sin_patente: ["Antigüedad: 24 meses", "Fotos negocio", "Fotos mercadería"],
+            prof_independiente: ["Antigüedad: 12 meses", "Título o Registro", "6 últimos IVAs"]
+        };
+        const CUOTERO = {
+            1000000: [235000, 182000, 150000, 127000, 112000, 101000, 96000, 90000],
+            2000000: [465000, 358000, 292500, 254000, 223000, 201000, 191000, 177000],
+            3000000: [685000, 535000, 435000, 380000, 334000, 302000, 287000, 266000],
+            4000000: [900000, 700000, 571000, 507000, 445000, 402000, 382000, 354000],
+            5000000: [1150000, 885000, 712000, 633000, 555000, 503000, 478000, 443000]
+        };
 
-        document.querySelectorAll('.format-mil').forEach(inp => {
-            inp.addEventListener('input', e => {
+        let sel = { m:0, c:0, p:0 };
+
+        document.querySelectorAll('.format-mil').forEach(i => {
+            i.addEventListener('input', e => {
                 let v = e.target.value.replace(/\D/g, "");
                 e.target.value = v.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             });
         });
 
-        const REQUISITOS = {
-            ips: ["Aportes IPS (6 meses)", "Liquidación de salario"],
-            iva: ["IVAs (6 meses)", "Facturas emitidas"],
-            informal: ["Certificado laboral", "6 meses antigüedad"],
-            pub_perm: ["Cédula", "Liquidación (1 mes antig.)"],
-            pub_cont: ["Liquidación (15 meses antig.)"],
-            micro_iva: ["IVA (18 meses)", "Fotos Negocio", "Fotos Mercadería"],
-            micro_pat: ["Patente Comercial", "Fotos Negocio"],
-            micro_sin: ["24 meses demostrables", "Fotos Local y Mercadería"],
-            pro: ["Título Universitario", "Registro Prof.", "IVAs (6 meses)"]
-        };
-
-        function cargarRequisitos() {
-            const p = document.getElementById('perfil').value;
-            const cont = document.getElementById('reqCont');
-            const lista = document.getElementById('listaReq');
-            const extra = document.getElementById('camposExtra');
-            if(!p) return cont.style.display='none';
-            cont.style.display='block';
-            extra.style.display='block'; 
-            lista.innerHTML = REQUISITOS[p].map(r => `
-                <div class="check-item"><input type="checkbox" class="doc-check" value="${r}"> ${r}</div>
-            `).join('');
+        function actualizarTabla() {
+            const m = document.getElementById('montoSimulador').value;
+            if(!m) return;
+            document.getElementById('tablaCont').style.display = 'block';
+            const cuotas = CUOTERO[m];
+            const plazos = [6, 8, 10, 12, 15, 18, 20, 24];
+            let html = "<tr>";
+            cuotas.forEach((c, i) => html += `<td onclick="selC(this, '${m}', '${c}', '${plazos[i]}')">${parseInt(c).toLocaleString()}</td>`);
+            document.getElementById('cuerpoTabla').innerHTML = html + "</tr>";
         }
 
-        function verCuotas() {
-            const m = document.getElementById('monto').value;
-            if(!m) return;
-            const c = {1000000:"127.000", 2000000:"254.000", 3000000:"380.000", 4000000:"507.000", 5000000:"633.000"}[m];
-            seleccion = `12 cuotas de ${c} Gs.`;
-            document.getElementById('cuoteroCont').innerHTML = `<b style="color:var(--accent)">Sugerencia: ${seleccion}</b>`;
-            document.getElementById('btnS2').style.display = 'block';
+        function selC(el, m, c, p) {
+            document.querySelectorAll('td').forEach(t => t.classList.remove('selected'));
+            el.classList.add('selected');
+            sel = { m, c, p };
+            document.getElementById('txtCuota').innerText = `${p} cuotas de ${parseInt(c).toLocaleString()} Gs.`;
+            document.getElementById('resultadoSim').style.display = 'block';
         }
 
         function irA(n) {
-            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            document.getElementById('step'+n).classList.add('active');
+            document.querySelectorAll('.step-content').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + n).classList.add('active');
             window.scrollTo(0,0);
         }
 
-        function otroC() { document.getElementById('otraC').style.display = (document.getElementById('ciudad').value === 'OTRA') ? 'block' : 'none'; }
+        function actualizarPerfiles() {
+            const p = document.getElementById('perfil').value;
+            const check = document.getElementById('checklistCont');
+            const lab = document.getElementById('seccionLaboral');
+            if(!p) { check.style.display='none'; lab.style.display='none'; return; }
+            check.style.display='block'; lab.style.display='block';
+            document.getElementById('listaCheck').innerHTML = REQUISITOS[p].map(r => `<div class="check-item"><input type="checkbox" class="doc-check" value="${r}"> ${r}</div>`).join('');
+        }
 
-        function finalizar() {
-            const docs_marcados = Array.from(document.querySelectorAll('.doc-check:checked')).map(c => c.value);
-            const docs_faltantes = Array.from(document.querySelectorAll('.doc-check:not(:checked)')).map(c => c.value);
+        function checkOtra() { document.getElementById('otraCiudad').style.display = (document.getElementById('ciudadSel').value === 'OTRA') ? 'block' : 'none'; }
+
+        function enviar() {
+            const ciudad = (document.getElementById('ciudadSel').value === 'OTRA') ? document.getElementById('otraCiudad').value : document.getElementById('ciudadSel').value;
+            const tiene = Array.from(document.querySelectorAll('.doc-check:checked')).map(c => c.value);
+            const falta = Array.from(document.querySelectorAll('.doc-check:not(:checked)')).map(c => c.value);
+            
             const data = {
                 nombre: document.getElementById('nombre').value,
                 ci: document.getElementById('ci').value,
                 whatsapp: document.getElementById('tel').value,
                 ingreso: document.getElementById('ingreso').value,
                 perfil: document.getElementById('perfil').value,
-                razon: document.getElementById('razon').value,
+                empresa: document.getElementById('razonSocial').value,
                 dir_lab: `${document.getElementById('labCalle').value} ${document.getElementById('labNum').value}, ${document.getElementById('labBarrio').value}`,
-                ciudad: document.getElementById('ciudad').value === 'OTRA' ? document.getElementById('otraC').value : document.getElementById('ciudad').value,
+                ciudad: ciudad,
                 dir_casa: `${document.getElementById('casaCalle').value} ${document.getElementById('casaNum').value}, ${document.getElementById('casaBarrio').value}`,
                 refs: `${document.getElementById('ref1').value} | ${document.getElementById('ref2').value} | ${document.getElementById('ref3').value}`,
-                sim: seleccion,
-                tiene: docs_marcados.join(", "),
-                falta: docs_faltantes.join(", ")
+                cuota: `${sel.p} cuotas de ${parseInt(sel.c).toLocaleString()}`,
+                tiene: tiene.join(", "),
+                falta: falta.join(", ")
             };
-
-            if(!data.nombre || !data.ci || !data.refs) return alert("Complete los datos obligatorios");
 
             fetch(G_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
 
             const msg = `*SOLICITUD DE CRÉDITO*\n\n` +
-                        `*CLIENTE:* ${data.nombre}\n` +
-                        `*CI:* ${data.ci}\n` +
-                        `*INGRESO:* ${data.ingreso} Gs\n` +
-                        `*PERFIL:* ${data.perfil}\n` +
-                        `*EMPRESA:* ${data.razon}\n` +
-                        `*DIR. LABORAL:* ${data.dir_lab}\n` +
-                        `*CIUDAD:* ${data.ciudad}\n` +
-                        `*DIR. CASA:* ${data.dir_casa}\n\n` +
-                        `*SIMULACIÓN:* ${data.sim}\n\n` +
-                        `*✅ POSEE:* ${data.tiene || 'Ninguno'}\n` +
-                        `*❌ FALTA:* ${data.falta || 'Ninguno'}\n\n` +
+                        `*CLIENTE:* ${data.nombre}\n*CI:* ${data.ci}\n*TEL:* ${data.whatsapp}\n*INGRESO:* ${data.ingreso} Gs\n` +
+                        `*PERFIL:* ${data.perfil}\n*EMPRESA:* ${data.empresa}\n*DIR. LABORAL:* ${data.dir_lab}\n` +
+                        `*CIUDAD:* ${data.ciudad}\n*DIR. CASA:* ${data.dir_casa}\n\n` +
+                        `*SIMULACIÓN:* ${data.cuota}\n\n` +
+                        `*✅ TIENE:* ${data.tiene || 'Ninguno'}\n*❌ FALTA:* ${data.falta || 'Ninguno'}\n\n` +
                         `*REFS:* ${data.refs}`;
 
             window.open(`https://wa.me/${WA_NUM}?text=${encodeURIComponent(msg)}`, '_blank');
