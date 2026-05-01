@@ -2,83 +2,209 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Isidro Cabrera · Asesoría de Crédito</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230B0F19'/><text x='50' y='68' font-size='55' text-anchor='middle' fill='%232ECC71' font-family='Arial' font-weight='bold'>IC</text></svg>">
-    
-    <meta property="og:title" content="Isidro Cabrera · Asesoría de Crédito">
-    <meta property="og:description" content="Evaluación de perfil y simulación de cuotas online.">
-    <meta property="og:image" content="https://tking-asesor.github.io/creditos/preview.jpg">
-    <meta property="og:type" content="website">
-
     <style>
-        :root { --bg: #0B0F19; --accent: #2ECC71; --white: #ffffff; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: var(--bg); 
-            color: var(--white); 
-            font-family: 'Segoe UI', sans-serif; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            padding: 20px; 
-            text-align: center; 
+        :root {
+            --bg-deep: #0B0F19; --accent-gold: #2ECC71; --white: #ffffff;
+            --whatsapp: #25D366; --error: #ff4d4d;
         }
-        .card { 
-            background: rgba(255,255,255,0.03); 
-            border-radius: 30px; 
-            padding: 40px 25px; 
-            max-width: 400px; 
-            width: 100%; 
-            border: 1px solid rgba(255,255,255,0.1); 
-            backdrop-filter: blur(15px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-        h2 { font-size: 22px; margin-bottom: 25px; line-height: 1.3; }
-        .btn { 
-            display: block; 
-            width: 100%; 
-            padding: 18px; 
-            margin: 15px 0; 
-            border-radius: 15px; 
-            border: none; 
-            font-weight: 700; 
-            cursor: pointer; 
-            transition: 0.3s; 
-            text-decoration: none; 
-            font-size: 15px;
-        }
-        .btn-green { background: var(--accent); color: var(--bg); }
-        .btn-outline { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: var(--white); }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        .oculto { display: none; }
-        .logo { font-size: 24px; font-weight: 800; margin-bottom: 10px; }
-        .logo span { color: var(--accent); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: var(--bg-deep); min-height: 100vh; padding: 15px; display: flex; justify-content: center; align-items: flex-start; color: white; }
+        .container { width: 100%; max-width: 500px; }
+        .app-card { background: rgba(255,255,255,0.03); border-radius: 30px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.5); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); }
+        .header { padding: 35px 20px; text-align: center; border-bottom: 1px solid rgba(46, 204, 113, 0.2); }
+        .logo { font-size: 26px; font-weight: 800; color: var(--white); }
+        .logo span { color: var(--accent-gold); }
+        .content { padding: 25px; }
+        .form-group { margin-bottom: 18px; }
+        label { display: block; font-size: 10px; font-weight: 800; margin-bottom: 6px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; }
+        input, select, textarea { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: var(--white); font-size: 15px; transition: 0.3s; }
+        input:focus, select:focus { border-color: var(--accent-gold); outline: none; background: rgba(255,255,255,0.08); }
+        option { background: #1A1D2E; color: white; }
+        .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .btn { width: 100%; padding: 18px; border-radius: 15px; font-size: 15px; font-weight: 700; cursor: pointer; border: none; transition: 0.3s; margin-top: 10px; }
+        .btn-primary { background: rgba(46, 204, 113, 0.15); color: var(--accent-gold); border: 1px solid rgba(46, 204, 113, 0.3); }
+        .btn-whatsapp { background: var(--whatsapp); color: white; }
+        .btn-back { background: transparent; color: rgba(255,255,255,0.4); font-size: 12px; margin-top: 15px; }
+        .table-container { overflow-x: auto; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); margin-top: 20px; background: rgba(0,0,0,0.2); }
+        table { width: 100%; border-collapse: collapse; font-size: 11px; min-width: 600px; }
+        th { background: rgba(46, 204, 113, 0.1); padding: 15px; color: var(--accent-gold); }
+        td { padding: 15px; text-align: center; color: white; border-bottom: 1px solid rgba(255,255,255,0.03); cursor: pointer; }
+        td.selected { background: var(--accent-gold); color: var(--bg-deep); font-weight: 800; }
+        .step-content { display: none; }
+        .step-content.active { display: block; animation: slideUp 0.5s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .checklist-container { background: rgba(46, 204, 113, 0.03); border: 1px solid rgba(46, 204, 113, 0.2); border-radius: 18px; padding: 20px; margin-top: 15px; }
+        .check-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; color: rgba(255,255,255,0.8); }
+        .check-item input { width: 20px; height: 20px; accent-color: var(--accent-gold); cursor: pointer; }
+        .alert-box { background: rgba(46, 204, 113, 0.1); border: 1px dashed var(--accent-gold); border-radius: 15px; padding: 15px; font-size: 12px; color: var(--accent-gold); text-align: center; margin-top: 20px; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="logo">ISIDRO <span>CABRERA</span></div>
-        
-        <div id="filterSection">
-            <h2>¿Cómo calificaría su historial crediticio actual?</h2>
-            <p style="font-size: 13px; opacity: 0.6; margin-bottom: 20px;">Seleccione una opción para iniciar la simulación.</p>
-            <button class="btn btn-green" onclick="location.href='app.html'">LIMPIO / SIN DEUDAS</button>
-            <button class="btn btn-outline" onclick="mostrarRechazo()">TENGO CUENTAS PENDIENTES</button>
-        </div>
+    <div class="container">
+        <div class="app-card">
+            <div class="header"><div class="logo">ISIDRO <span>CABRERA</span></div></div>
+            <div class="content">
+                <div class="step-content active" id="step1">
+                    <label>Monto a Simular (Gs.)</label>
+                    <select id="montoSimulador" onchange="actualizarTabla()">
+                        <option value="">Seleccione...</option>
+                        <option value="1000000">1.000.000 Gs</option>
+                        <option value="2000000">2.000.000 Gs</option>
+                        <option value="3000000">3.000.000 Gs</option>
+                        <option value="4000000">4.000.000 Gs</option>
+                        <option value="5000000">5.000.000 Gs</option>
+                    </select>
+                    <div class="table-container" id="tablaCont" style="display:none;">
+                        <table>
+                            <thead><tr><th>6 cuot.</th><th>8 cuot.</th><th>10 cuot.</th><th>12 cuot.</th><th>15 cuot.</th><th>18 cuot.</th><th>20 cuot.</th><th>24 cuot.</th></tr></thead>
+                            <tbody id="cuerpoTabla"></tbody>
+                        </table>
+                    </div>
+                    <div id="resultadoSim" style="display:none; text-align:center; margin-top:25px;">
+                        <h2 id="txtCuota" style="color:var(--accent-gold); font-size:28px; margin-bottom:20px;"></h2>
+                        <button class="btn btn-primary" onclick="irA(2)">CONTINUAR EVALUACIÓN</button>
+                    </div>
+                </div>
 
-        <div id="blockedMessage" class="oculto">
-            <h2 style="color: #ff4d4d;">Acceso Restringido</h2>
-            <p style="opacity: 0.8; font-size: 14px; line-height: 1.6;">Lamentablemente, su perfil no cumple con los requisitos mínimos para el sistema de aprobación automática en este momento.</p>
-            <button class="btn btn-outline" onclick="location.reload()" style="margin-top:20px;">Volver a intentar</button>
+                <div class="step-content" id="step2">
+                    <div class="form-group"><label>Nombre y Apellido Completos</label><input type="text" id="nombre"></div>
+                    <div class="row-2">
+                        <div class="form-group"><label>CI N°</label><input type="text" id="ci" class="format-mil"></div>
+                        <div class="form-group"><label>WhatsApp</label><input type="tel" id="tel"></div>
+                    </div>
+                    <div class="form-group"><label>Ingreso Mensual</label><input type="text" id="ingreso" class="format-mil"></div>
+                    <button class="btn btn-primary" onclick="irA(3)">SIGUIENTE</button>
+                    <button class="btn btn-back" onclick="irA(1)">← Volver</button>
+                </div>
+
+                <div class="step-content" id="step3">
+                    <div class="form-group">
+                        <label>Perfil Laboral</label>
+                        <select id="perfil" onchange="actualizarPerfiles()">
+                            <option value="">Seleccione...</option>
+                            <option value="formal_ips">Trabajador Formal (IPS)</option>
+                            <option value="formal_iva">Trabajador Formal (IVA)</option>
+                            <option value="informal">Trabajador Informal (Sin IPS)</option>
+                            <option value="publico_perm">Funcionario Público Permanente</option>
+                            <option value="publico_cont">Funcionario Público Contratado</option>
+                            <option value="micro_iva">Microempresa con IVA</option>
+                            <option value="micro_patente">Microempresa con Patente</option>
+                            <option value="micro_sin_patente">Microempresa sin Patente</option>
+                            <option value="prof_independiente">Profesional Independiente</option>
+                        </select>
+                    </div>
+                    <div id="seccionLab" style="display:none;">
+                        <div class="form-group"><label>Empresa / Razón Social</label><input type="text" id="razonSocial"></div>
+                        <label>Dirección Laboral</label>
+                        <div class="form-group"><input type="text" id="labCalle" placeholder="Calle"></div>
+                        <div class="row-2">
+                            <input type="text" id="labNum" placeholder="N°">
+                            <input type="text" id="labBarrio" placeholder="Barrio">
+                        </div>
+                    </div>
+                    <div id="checklistCont" class="checklist-container" style="display:none;">
+                        <label style="color:var(--accent-gold); margin-bottom:10px; display:block;">DOCUMENTOS QUE POSEE:</label>
+                        <div id="listaDocs"></div>
+                    </div>
+                    <button class="btn btn-primary" onclick="irA(4)">SIGUIENTE</button>
+                    <button class="btn btn-back" onclick="irA(2)">← Volver</button>
+                </div>
+
+                <div class="step-content" id="step4">
+                    <div class="form-group">
+                        <label>Ciudad</label>
+                        <select id="ciudadSel" onchange="checkOtra()">
+                            <option value="Pedro Juan Caballero (PJC)">Pedro Juan Caballero (PJC)</option>
+                            <option value="Asunción">Asunción</option>
+                            <option value="Ciudad del Este">Ciudad del Este</option>
+                            <option value="OTRA">OTRA CIUDAD</option>
+                        </select>
+                        <input type="text" id="otraCiudad" style="display:none; margin-top:10px;" placeholder="Escriba su ciudad">
+                    </div>
+                    <label>Dirección Particular (Casa)</label>
+                    <div class="form-group"><input type="text" id="casaCalle" placeholder="Calle"></div>
+                    <div class="row-2">
+                        <input type="text" id="casaNum" placeholder="N°">
+                        <input type="text" id="casaBarrio" placeholder="Barrio">
+                    </div>
+                    <label style="margin-top:20px; display:block;">3 Referencias (Nombre y Celular)</label>
+                    <input type="text" id="ref1" placeholder="Ref 1 (Familiar)" style="margin-bottom:10px;">
+                    <input type="text" id="ref2" placeholder="Ref 2 (Personal)" style="margin-bottom:10px;">
+                    <input type="text" id="ref3" placeholder="Ref 3 (Personal/Laboral)">
+                    <div class="alert-box">📌 Tenga listos sus documentos. Deberá enviar ubicación GPS vía WhatsApp cuando se solicite.</div>
+                    <button class="btn btn-whatsapp" onclick="enviar()">ENVIAR SOLICITUD COMPLETA</button>
+                    <button class="btn btn-back" onclick="irA(3)">← Volver</button>
+                </div>
+            </div>
         </div>
     </div>
-
     <script>
-        function mostrarRechazo() {
-            document.getElementById('filterSection').classList.add('oculto');
-            document.getElementById('blockedMessage').classList.remove('oculto');
+        const WA_NUM = "595992271485";
+        const REQUISITOS = {
+            formal_ips: ["Antigüedad: 6 meses aportes IPS", "Liquidación de salario"],
+            formal_iva: ["Antigüedad: 6 meses con IVAs", "6 últimos IVAs", "6 facturas emitidas"],
+            informal: ["Antigüedad: 6 meses mínimo", "Certificado de trabajo o RUC"],
+            publico_perm: ["Antigüedad: 1 mes", "Cédula vigente"],
+            publico_cont: ["Antigüedad: 15 meses", "Cédula vigente"],
+            micro_iva: ["Antigüedad: 18 meses", "6 últimos IVAs", "Fotos negocio"],
+            micro_patente: ["Antigüedad: 18 meses", "Patente actual", "6 últimos IVAs", "Fotos negocio"],
+            micro_sin_patente: ["Antigüedad: 24 meses", "Fotos negocio", "Fotos mercadería"],
+            prof_independiente: ["Antigüedad: 12 meses", "Título o Registro", "6 últimos IVAs"]
+        };
+        const CUOTERO = {
+            1000000: [235000, 182000, 150000, 127000, 112000, 101000, 96000, 90000],
+            2000000: [465000, 358000, 292500, 254000, 223000, 201000, 191000, 177000],
+            3000000: [685000, 535000, 435000, 380000, 334000, 302000, 287000, 266000],
+            4000000: [900000, 700000, 571000, 507000, 445000, 402000, 382000, 354000],
+            5000000: [1150000, 885000, 712000, 633000, 555000, 503000, 478000, 443000]
+        };
+        let sel = { m:0, c:0, p:0 };
+        document.querySelectorAll('.format-mil').forEach(i => {
+            i.addEventListener('input', e => {
+                let v = e.target.value.replace(/\D/g, "");
+                e.target.value = v.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            });
+        });
+        function actualizarTabla() {
+            const m = document.getElementById('montoSimulador').value;
+            if(!m) return;
+            document.getElementById('tablaCont').style.display = 'block';
+            const cuotas = CUOTERO[m];
+            const plazos = [6, 8, 10, 12, 15, 18, 20, 24];
+            let html = "<tr>";
+            cuotas.forEach((c, i) => html += `<td onclick="selC(this, '${m}', '${c}', '${plazos[i]}')">${parseInt(c).toLocaleString()}</td>`);
+            document.getElementById('cuerpoTabla').innerHTML = html + "</tr>";
+        }
+        function selC(el, m, c, p) {
+            document.querySelectorAll('td').forEach(t => t.classList.remove('selected'));
+            el.classList.add('selected');
+            sel = { m, c, p };
+            document.getElementById('txtCuota').innerText = `${p} cuotas de ${parseInt(c).toLocaleString()} Gs.`;
+            document.getElementById('resultadoSim').style.display = 'block';
+        }
+        function irA(n) {
+            document.querySelectorAll('.step-content').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + n).classList.add('active');
+            window.scrollTo(0,0);
+        }
+        function actualizarPerfiles() {
+            const p = document.getElementById('perfil').value;
+            const check = document.getElementById('checklistCont');
+            const lab = document.getElementById('seccionLab');
+            if(!p) { check.style.display='none'; lab.style.display='none'; return; }
+            check.style.display='block'; lab.style.display='block';
+            document.getElementById('listaDocs').innerHTML = REQUISITOS[p].map(r => `<div class="check-item"><input type="checkbox" class="doc-check" value="${r}"> ${r}</div>`).join('');
+        }
+        function checkOtra() { document.getElementById('otraCiudad').style.display = (document.getElementById('ciudadSel').value === 'OTRA') ? 'block' : 'none'; }
+        function enviar() {
+            const ciudad = (document.getElementById('ciudadSel').value === 'OTRA') ? document.getElementById('otraCiudad').value : document.getElementById('ciudadSel').value;
+            const tiene = Array.from(document.querySelectorAll('.doc-check:checked')).map(c => c.value);
+            const falta = Array.from(document.querySelectorAll('.doc-check:not(:checked)')).map(c => c.value);
+            const msg = `*SOLICITUD DE CRÉDITO*\n\n*CLIENTE:* ${document.getElementById('nombre').value}\n*CI:* ${document.getElementById('ci').value}\n*TEL:* ${document.getElementById('tel').value}\n*INGRESO:* ${document.getElementById('ingreso').value}\n*PERFIL:* ${document.getElementById('perfil').options[document.getElementById('perfil').selectedIndex].text}\n*EMPRESA:* ${document.getElementById('razonSocial').value}\n*CIUDAD:* ${ciudad}\n\n*SIMULACIÓN:* ${sel.p} cuotas de ${parseInt(sel.c).toLocaleString()} Gs.\n\n*✅ TIENE:* ${tiene.join(", ") || 'Ninguno'}\n*❌ FALTA:* ${falta.join(", ") || 'Ninguno'}`;
+            window.open(`https://wa.me/${WA_NUM}?text=${encodeURIComponent(msg)}`, '_blank');
         }
     </script>
 </body>
