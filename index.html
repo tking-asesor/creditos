@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Isidro Cabrera · Asesoría</title>
+    <title>Isidro Cabrera · Asesoría de Crédito</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230B0F19'/><text x='50' y='68' font-size='55' text-anchor='middle' fill='%232ECC71' font-family='Arial' font-weight='bold'>IC</text></svg>">
     
     <meta property="og:title" content="Isidro Cabrera · Asesoría de Crédito">
@@ -13,38 +13,70 @@
 
     <style>
         :root { --bg: #0B0F19; --accent: #2ECC71; --white: #ffffff; }
-        body { background: var(--bg); color: var(--white); font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; text-align: center; }
-        .card { background: rgba(255,255,255,0.02); border-radius: 25px; padding: 40px 20px; max-width: 400px; width: 100%; border: 1px solid rgba(255,255,255,0.08); }
-        .btn { display: block; width: 100%; padding: 16px; margin: 12px 0; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; text-decoration: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg); 
+            color: var(--white); 
+            font-family: 'Segoe UI', sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            padding: 20px; 
+            text-align: center; 
+        }
+        .card { 
+            background: rgba(255,255,255,0.03); 
+            border-radius: 30px; 
+            padding: 40px 25px; 
+            max-width: 400px; 
+            width: 100%; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            backdrop-filter: blur(15px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        h2 { font-size: 22px; margin-bottom: 25px; line-height: 1.3; }
+        .btn { 
+            display: block; 
+            width: 100%; 
+            padding: 18px; 
+            margin: 15px 0; 
+            border-radius: 15px; 
+            border: none; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            text-decoration: none; 
+            font-size: 15px;
+        }
         .btn-green { background: var(--accent); color: var(--bg); }
-        .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--white); }
+        .btn-outline { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: var(--white); }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
         .oculto { display: none; }
+        .logo { font-size: 24px; font-weight: 800; margin-bottom: 10px; }
+        .logo span { color: var(--accent); }
     </style>
 </head>
 <body>
-    <div class="card" id="mainCard">
+    <div class="card">
+        <div class="logo">ISIDRO <span>CABRERA</span></div>
+        
         <div id="filterSection">
-            <h2>¿Cómo está su historial crediticio?</h2>
-            <button class="btn btn-green" onclick="next()">Limpio / Sin deudas</button>
-            <button class="btn btn-outline" onclick="blockUser()">Tengo deudas pendientes</button>
+            <h2>¿Cómo calificaría su historial crediticio actual?</h2>
+            <p style="font-size: 13px; opacity: 0.6; margin-bottom: 20px;">Seleccione una opción para iniciar la simulación.</p>
+            <button class="btn btn-green" onclick="location.href='app.html'">LIMPIO / SIN DEUDAS</button>
+            <button class="btn btn-outline" onclick="mostrarRechazo()">TENGO CUENTAS PENDIENTES</button>
         </div>
+
         <div id="blockedMessage" class="oculto">
             <h2 style="color: #ff4d4d;">Acceso Restringido</h2>
-            <p>Lamentablemente no cumple con los requisitos mínimos para este producto.</p>
+            <p style="opacity: 0.8; font-size: 14px; line-height: 1.6;">Lamentablemente, su perfil no cumple con los requisitos mínimos para el sistema de aprobación automática en este momento.</p>
+            <button class="btn btn-outline" onclick="location.reload()" style="margin-top:20px;">Volver a intentar</button>
         </div>
     </div>
 
     <script>
-        // Si el usuario ya fue bloqueado antes, no le mostramos el filtro
-        if(localStorage.getItem('ic_blocked') === 'true') {
-            document.getElementById('filterSection').classList.add('oculto');
-            document.getElementById('blockedMessage').classList.remove('oculto');
-        }
-
-        function next() { window.location.href = 'app.html'; }
-
-        function blockUser() {
-            localStorage.setItem('ic_blocked', 'true');
+        function mostrarRechazo() {
             document.getElementById('filterSection').classList.add('oculto');
             document.getElementById('blockedMessage').classList.remove('oculto');
         }
