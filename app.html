@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Simulador de Crédito · Isidro Cabrera</title>
+    <style>
+        :root {
+            --bg-deep: #0B0F19; --accent-gold: #2ECC71; --white: #ffffff;
+            --whatsapp: #25D366;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-deep);
+            min-height: 100vh; padding: 10px; display: flex; justify-content: center; align-items: flex-start;
+        }
+        .container { width: 100%; max-width: 500px; }
+        .app-card {
+            background: rgba(255,255,255,0.02); border-radius: 25px; overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4); margin-bottom: 50px;
+            backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.08);
+        }
+        .header {
+            padding: 30px 20px; color: white; text-align: center;
+            border-bottom: 1px solid rgba(46, 204, 113, 0.4);
+        }
+        .header .logo { font-size: 24px; font-weight: 800; }
+        .header .logo span { color: var(--accent-gold); }
+        .agent-info { margin-top: 15px; font-size: 11px; background: rgba(46, 204, 113, 0.1); display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 50px; border: 1px solid rgba(46, 204, 113, 0.2); color: var(--white); }
+
+        .content { padding: 20px; }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-size: 10px; font-weight: 700; margin-bottom: 5px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.8px; }
+        .required { color: #e53935; }
+
+        input, select, textarea {
+            width: 100%; padding: 14px 16px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+            font-size: 14px; background: rgba(255,255,255,0.05); color: var(--white);
+            transition: all 0.2s;
+        }
+        input:focus, select:focus { border-color: var(--accent-gold); outline: none; }
+
+        .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+        .btn-primary { background: rgba(46, 204, 113, 0.15); color: var(--accent-gold); border: 1px solid rgba(46, 204, 113, 0.3); }
+        .btn-whatsapp { background: var(--whatsapp); color: white; text-decoration: none; display: block; text-align: center; }
+
+        .table-container { overflow-x: auto; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin-top: 15px; }
+        table { width: 100%; border-collapse: collapse; font-size: 11px; min-width: 500px; }
+        th { background: rgba(46, 204, 113, 0.1); padding: 12px; color: var(--accent-gold); }
+        td { padding: 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; color: white; }
+        td.selected { background: var(--accent-gold); color: var(--bg-deep); font-weight: 800; }
+
+        .progress-bar { display: flex; margin-bottom: 25px; gap: 5px; }
+        .progress-step { flex: 1; height: 4px; background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .progress-step.active { background: var(--accent-gold); }
+        .step-content { display: none; }
+        .step-content.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .confirm-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--accent-gold); color: var(--bg-deep); padding: 15px 30px; border-radius: 50px; font-weight: 700; display: none; z-index: 1000; }
+    </style>
+</head>
+<body>
+    <div class="confirm-toast" id="confirmToast">✅ ¡PROCESANDO SOLICITUD!</div>
+
+    <div class="container">
+        <div class="app-card">
+            <div class="header">
+                <div class="logo">ISIDRO <span>CABRERA</span></div>
+                <div class="agent-info">0992 271 485 · tking.asesor@gmail.com</div>
+            </div>
+
+            <div class="content">
+                <div class="progress-bar">
+                    <div class="progress-step active" id="b1"></div>
+                    <div class="progress-step" id="b2"></div>
+                    <div class="progress-step" id="b3"></div>
+                </div>
+
+                <div class="step-content active" id="step1">
+                    <label>Monto a solicitar (Gs.)</label>
+                    <select id="montoSimulador" onchange="actualizarTabla()">
+                        <option value="">Seleccione monto...</option>
+                        <option value="1000000">1.000.000 Gs</option>
+                        <option value="2000000">2.000.000 Gs</option>
+                        <option value="3000000">3.000.000 Gs</option>
+                        <option value="4000000">4.000.000 Gs</option>
+                        <option value="5000000">5.000.000 Gs</option>
+                    </select>
+
+                    <div class="table-container" id="tablaCont" style="display:none;">
+                        <table>
+                            <thead><tr><th>6 cuotas</th><th>12 cuotas</th><th>18 cuotas</th><th>24 cuotas</th></tr></thead>
+                            <tbody id="cuerpoTabla"></tbody>
+                        </table>
+                    </div>
+                    <p style="font-size:10px; color:gray; margin:10px 0; text-align:center;">Toque la cuota que prefiere para continuar.</p>
+                    <div id="resultadoSim" style="display:none; text-align:center; margin-top:20px;">
+                        <h3 id="txtCuota" style="color:var(--accent-gold); font-size:24px;"></h3>
+                        <button class="btn btn-primary" onclick="irA(2)">CONTINUAR CON MIS DATOS</button>
+                    </div>
+                </div>
+
+                <div class="step-content" id="step2">
+                    <div class="form-group"><label>Nombre Completo <span class="required">*</span></label><input type="text" id="nombre" placeholder="Juan Pérez"></div>
+                    <div class="row-2">
+                        <div class="form-group"><label>Cédula N° <span class="required">*</span></label><input type="text" id="ci" placeholder="1234567" inputmode="numeric"></div>
+                        <div class="form-group"><label>WhatsApp <span class="required">*</span></label><input type="tel" id="tel" placeholder="09xx xxx xxx"></div>
+                    </div>
+                    <div class="form-group"><label>Perfil Laboral <span class="required">*</span></label>
+                        <select id="perfil">
+                            <option value="Formal IPS">Formal con IPS</option>
+                            <option value="Formal IVA">Independiente con IVA</option>
+                            <option value="Publico">Funcionario Público</option>
+                            <option value="Informal">Informal / Sin IPS</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Ingreso Mensual Promedio <span class="required">*</span></label><input type="text" id="ingreso" placeholder="Ej: 3.500.000"></div>
+                    <button class="btn btn-primary" onclick="irA(3)">SIGUIENTE PASO</button>
+                </div>
+
+                <div class="step-content" id="step3">
+                    <div class="form-group"><label>Referencias (Nombre y Celular) <span class="required">*</span></label><textarea id="refs" placeholder="1. Familiar&#10;2. Laboral/Personal" rows="3"></textarea></div>
+                    <div class="form-group"><label>Ciudad y Dirección <span class="required">*</span></label><input type="text" id="dir" placeholder="PJC, Asunción, Barrio..."></div>
+                    <button class="btn btn-whatsapp" onclick="enviar()">ENVIAR SOLICITUD AHORA</button>
+                    <button class="btn" style="color:gray; font-size:12px;" onclick="irA(2)">Volver atrás</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const WHATSAPP_NUMBER = "595992271485";
+        const GOOGLE_URL = "REEMPLAZAR_CON_TU_URL_DE_APPS_SCRIPT";
+        const CUOTERO = {
+            1000000: [235000, 127000, 101000, 90000],
+            2000000: [465000, 254000, 201000, 177000],
+            3000000: [685000, 380000, 302000, 266000],
+            4000000: [900000, 507000, 402000, 354000],
+            5000000: [1150000, 633000, 503000, 443000]
+        };
+        let seleccion = { monto: 0, cuota: '', plazo: '' };
+
+        function actualizarTabla() {
+            const m = document.getElementById('montoSimulador').value;
+            if(!m) return;
+            document.getElementById('tablaCont').style.display = 'block';
+            const cuotas = CUOTERO[m];
+            const plazos = [6, 12, 18, 24];
+            let html = "<tr>";
+            cuotas.forEach((c, i) => {
+                html += `<td onclick="seleccionar(this, '${m}', '${c}', '${plazos[i]}')">${c.toLocaleString()}</td>`;
+            });
+            document.getElementById('cuerpoTabla').innerHTML = html + "</tr>";
+        }
+
+        function seleccionar(el, m, c, p) {
+            document.querySelectorAll('td').forEach(t => t.classList.remove('selected'));
+            el.classList.add('selected');
+            seleccion = { monto: m, cuota: c, plazo: p };
+            document.getElementById('txtCuota').innerText = `${p} cuotas de ${parseInt(c).toLocaleString()} Gs.`;
+            document.getElementById('resultadoSim').style.display = 'block';
+        }
+
+        function irA(n) {
+            document.querySelectorAll('.step-content, .progress-step').forEach(e => e.classList.remove('active'));
+            document.getElementById('step' + n).classList.add('active');
+            for(let i=1; i<=n; i++) document.getElementById('b'+i).classList.add('active');
+        }
+
+        function enviar() {
+            const data = {
+                nombre: document.getElementById('nombre').value,
+                ci: document.getElementById('ci').value,
+                telefono: document.getElementById('tel').value,
+                perfil: document.getElementById('perfil').value,
+                ingreso: document.getElementById('ingreso').value,
+                referencias: document.getElementById('refs').value,
+                ciudad: document.getElementById('dir').value,
+                monto: seleccion.monto,
+                cuota: `${seleccion.plazo} cuotas de ${seleccion.cuota}`
+            };
+
+            if(!data.nombre || !data.ci || !data.referencias) { alert("Complete todos los campos obligatorios."); return; }
+
+            document.getElementById('confirmToast').style.display = 'block';
+
+            // Enviar a Google Sheets
+            fetch(GOOGLE_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
+
+            // Enviar a WhatsApp
+            const msg = `¡Hola Isidro! Solicito crédito:\n*Cliente:* ${data.nombre}\n*CI:* ${data.ci}\n*Perfil:* ${data.perfil}\n*Monto:* ${parseInt(data.monto).toLocaleString()} Gs\n*Cuota:* ${data.cuota}\n*Ingreso:* ${data.ingreso}\n*Refs:* ${data.referencias}`;
+            
+            setTimeout(() => {
+                window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+                location.reload();
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
