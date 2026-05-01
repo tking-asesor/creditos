@@ -64,32 +64,19 @@
         <div id="filterSection">
             <h2>¿Cómo calificaría su historial crediticio actual?</h2>
             <p style="font-size: 13px; opacity: 0.6; margin-bottom: 20px;">Seleccione una opción para iniciar la simulación.</p>
-            <button class="btn btn-green" onclick="next()">LIMPIO / SIN DEUDAS</button>
-            <button class="btn btn-outline" onclick="blockUser()">TENGO CUENTAS PENDIENTES</button>
+            <button class="btn btn-green" onclick="location.href='app.html'">LIMPIO / SIN DEUDAS</button>
+            <button class="btn btn-outline" onclick="mostrarRechazo()">TENGO CUENTAS PENDIENTES</button>
         </div>
 
         <div id="blockedMessage" class="oculto">
             <h2 style="color: #ff4d4d;">Acceso Restringido</h2>
             <p style="opacity: 0.8; font-size: 14px; line-height: 1.6;">Lamentablemente, su perfil no cumple con los requisitos mínimos para el sistema de aprobación automática en este momento.</p>
-            <button class="btn btn-outline" onclick="window.location.reload()" style="margin-top:20px; font-size:12px;">Intentar de nuevo</button>
+            <button class="btn btn-outline" onclick="location.reload()" style="margin-top:20px;">Volver a intentar</button>
         </div>
     </div>
 
     <script>
-        // Verificación de bloqueo previo
-        if(localStorage.getItem('ic_blocked') === 'true') {
-            document.getElementById('filterSection').classList.add('oculto');
-            document.getElementById('blockedMessage').classList.remove('oculto');
-        }
-
-        function next() { 
-            // Si elige "Limpio", le permitimos pasar y nos aseguramos de que no esté bloqueado
-            localStorage.removeItem('ic_blocked');
-            window.location.href = 'app.html'; 
-        }
-
-        function blockUser() {
-            localStorage.setItem('ic_blocked', 'true');
+        function mostrarRechazo() {
             document.getElementById('filterSection').classList.add('oculto');
             document.getElementById('blockedMessage').classList.remove('oculto');
         }
