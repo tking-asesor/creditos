@@ -5,33 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Isidro Cabrera · Asesoría de Crédito</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230B0F19'/><text x='50' y='68' font-size='55' text-anchor='middle' fill='%232ECC71' font-family='Arial' font-weight='bold'>IC</text></svg>">
-    
-    <meta property="og:title" content="Isidro Cabrera · Asesoría de Crédito">
-    <meta property="og:description" content="Evaluación de perfil y simulación de cuotas online.">
-    <meta property="og:image" content="https://tking-asesor.github.io/creditos/preview.jpg">
-    <meta property="og:type" content="website">
-
     <style>
         :root { --bg: #0B0F19; --accent: #2ECC71; --white: #ffffff; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: var(--bg); color: var(--white); 
-            font-family: 'Segoe UI', sans-serif; 
-            display: flex; justify-content: center; align-items: center; 
-            min-height: 100vh; padding: 20px; text-align: center; 
-        }
-        .card { 
-            background: rgba(255,255,255,0.03); border-radius: 30px; 
-            padding: 40px 25px; max-width: 400px; width: 100%; 
-            border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(15px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-        h2 { font-size: 22px; margin-bottom: 25px; line-height: 1.3; }
-        .btn { 
-            display: block; width: 100%; padding: 18px; margin: 15px 0; 
-            border-radius: 15px; border: none; font-weight: 700; 
-            cursor: pointer; transition: 0.3s; text-decoration: none; font-size: 15px;
-        }
+        body { background: var(--bg); color: var(--white); font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; text-align: center; }
+        .card { background: rgba(255,255,255,0.03); border-radius: 30px; padding: 40px 25px; max-width: 400px; width: 100%; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(15px); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        h2 { font-size: 20px; margin-bottom: 15px; line-height: 1.3; }
+        p { font-size: 14px; opacity: 0.7; line-height: 1.5; margin-bottom: 20px; }
+        .btn { display: block; width: 100%; padding: 18px; margin: 10px 0; border-radius: 15px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; text-decoration: none; font-size: 15px; }
         .btn-green { background: var(--accent); color: var(--bg); }
         .btn-outline { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: var(--white); }
         .oculto { display: none; }
@@ -44,17 +25,17 @@
         <div class="logo">ISIDRO <span>CABRERA</span></div>
         
         <div id="filterSection">
-            <h2>¿Cómo calificaría su historial crediticio actual?</h2>
-            <p style="font-size: 13px; opacity: 0.6; margin-bottom: 20px;">Seleccione una opción para iniciar la simulación.</p>
-            <a href="./app.html" class="btn btn-green">LIMPIO / SIN DEUDAS</a>
+            <h2>Evaluación Profesional</h2>
+            <p>Soy <b>Isidro Cabrera</b>, especialista en créditos. Iniciemos una simulación de cuotas para evaluar su perfil crediticio de forma profesional.</p>
+            <h2 style="font-size: 16px;">¿Posee actualmente deudas en Informconf?</h2>
+            <a href="app.html" class="btn btn-green">LIMPIO / SIN DEUDAS</a>
             <button class="btn btn-outline" onclick="mostrarRechazo()">TENGO CUENTAS PENDIENTES</button>
         </div>
 
         <div id="blockedMessage" class="oculto">
-            <h2 style="color: #ff4d4d;">Acceso Restringido</h2>
-            <p style="opacity: 0.8; font-size: 14px; line-height: 1.6;">Lamentablemente, su perfil no cumple con los requisitos mínimos en este momento.</p>
-            <button class="btn btn-outline" onclick="location.reload()" style="margin-top:20px;">Volver a intentar</button>
-        </div>
+            <h2 style="color: #ff4d4d;">Muchas Gracias</h2>
+            <p style="opacity: 0.9; font-size: 15px;">Lamentablemente, por políticas de riesgo, no podemos avanzar con perfiles que posean moras activas. Agradecemos su interés y le deseamos éxito en sus gestiones.</p>
+            </div>
     </div>
 
     <script>
