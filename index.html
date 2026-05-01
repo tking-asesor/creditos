@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Isidro Cabrera · Calificación de Crédito</title>
+    <style>
+        :root { --bg: #0B0F19; --accent: #2ECC71; --white: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: var(--bg); color: var(--white); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .card { background: rgba(255,255,255,0.02); border-radius: 25px; padding: 35px 25px; max-width: 450px; width: 100%; text-align: center; backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 30px 60px rgba(0,0,0,0.4); }
+        .logo { font-size: 26px; font-weight: 800; margin-bottom: 5px; }
+        .logo span { color: var(--accent); }
+        .subtitle { font-size: 13px; opacity: 0.6; margin-bottom: 30px; letter-spacing: 1px; }
+        h2 { font-size: 18px; margin-bottom: 25px; line-height: 1.4; }
+        .btn-group { display: flex; flex-direction: column; gap: 12px; }
+        .btn { padding: 16px; border-radius: 15px; font-size: 15px; font-weight: 700; cursor: pointer; border: none; transition: 0.3s; text-decoration: none; display: block; }
+        .btn-primary { background: var(--accent); color: var(--bg); }
+        .btn-outline { background: rgba(255,255,255,0.05); color: var(--white); border: 1px solid rgba(255,255,255,0.1); }
+        .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .oculto { display: none; }
+        .progress { font-size: 10px; color: var(--accent); margin-bottom: 15px; font-weight: 800; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+    <!-- PASO 1: FILTRO DE CALIDAD FINANCIERA -->
+    <div class="card" id="step1">
+        <div class="progress">Paso 1 de 3</div>
+        <div class="logo">ISIDRO <span>CABRERA</span></div>
+        <div class="subtitle">AUDITORÍA PREVENTIVA</div>
+        <h2>¿Cómo calificarías tu historial en Informconf hoy?</h2>
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="next(2)">ESTOY LIMPIO (Sin atrasos)</button>
+            <button class="btn btn-outline" onclick="next(2)">TUVE ATRASOS (Ya cancelados)</button>
+            <button class="btn btn-outline" onclick="reject()">TENGO CUENTAS PENDIENTES</button>
+        </div>
+    </div>
+
+    <!-- PASO 2: FILTRO DE INGRESOS -->
+    <div class="card oculto" id="step2">
+        <div class="progress">Paso 2 de 3</div>
+        <h2>¿Podés demostrar ingresos mensuales superiores a Gs. 1.750.000?</h2>
+        <p style="font-size: 13px; opacity: 0.6; margin-bottom: 20px;">(Vía IPS, IVA, Certificado o Patente)</p>
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="next(3)">SÍ, TENGO COMPROBANTES</button>
+            <button class="btn btn-outline" onclick="reject()">NO TENGO COMPROBANTES</button>
+        </div>
+    </div>
+
+    <!-- PASO 3: FILTRO DE VERIFICACIÓN -->
+    <div class="card oculto" id="step3">
+        <div class="progress">Paso 3 de 3</div>
+        <h2>¿Tu lugar de trabajo o residencia es verificable en Paraguay?</h2>
+        <div class="btn-group">
+            <a href="app.html" class="btn btn-primary">SÍ, VERIFICABLE (ENTRAR)</a>
+            <button class="btn btn-outline" onclick="reject()">NO ES VERIFICABLE</button>
+        </div>
+    </div>
+
+    <!-- PANTALLA DE RECHAZO (EL SALVAVIDAS) -->
+    <div class="card oculto" id="finalReject">
+        <h2 style="color: #ff4d4d;">Evaluación Manual Requerida</h2>
+        <p style="font-size: 14px; opacity: 0.8; margin-bottom: 20px;">Tu perfil actual no califica para el sistema automático. Sin embargo, un asesor puede revisar tu caso personalmente para buscar alternativas.</p>
+        <a href="https://wa.me/595992271485?text=Hola Isidro, no pasé el filtro automático pero quiero una revisión manual de mi caso de crédito." class="btn btn-primary">SOLICITAR REVISIÓN MANUAL</a>
+    </div>
+
+    <script>
+        function next(n) {
+            document.querySelectorAll('.card').forEach(c => c.classList.add('oculto'));
+            document.getElementById('step' + n).classList.remove('oculto');
+        }
+        function reject() {
+            document.querySelectorAll('.card').forEach(c => c.classList.add('oculto'));
+            document.getElementById('finalReject').classList.remove('oculto');
+        }
+    </script>
+</body>
+</html>
